@@ -1,3 +1,3 @@
 module.exports = {
-  db: 'mongodb://localhost:27017/reactdb',
+  db: 'mongodb+srv://vishwaas:Simform%40123@cluster1.himxh2y.mongodb.net/reactdb?retryWrites=true&w=majority',
 }

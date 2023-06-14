@@ -2,13 +2,14 @@ let express = require('express');
 let mongoose = require('mongoose');
 let cors = require('cors');
 let bodyParser = require('body-parser');
+require('dotenv').config;
 
 // Express Route
 const studentRoute = require('./routes/student.route')
 
 // Connecting mongoDB Database
 mongoose
-  .connect('mongodb://localhost:27017/mydatabase')
+  .connect('mongodb+srv://vishwaas:Simform%40123@cluster1.himxh2y.mongodb.net/reactdb?retryWrites=true&w=majority')
   .then((x) => {
     console.log(`Connected to Mongo! Database name: "${x.connections[0].name}"`)
   })
