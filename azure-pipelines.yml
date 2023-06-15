@@ -6,8 +6,11 @@
 trigger:
 - main
 
-pool: BlazeAgent
-  
+pool: 
+  vmImage: 'ubuntu-latest'  
+
+variables:
+  npm_config_cache: '$(Pipeline.Workspace)/.npm'
 
 steps:
 - task: NodeTool@0
@@ -15,8 +18,16 @@ steps:
     versionSpec: '16.x'
   displayName: 'Install Node.js'
 
+- task: Cache@2
+  inputs:
+    key: 'npm | $(Agent.OS) | ./trainee_frontend/package-lock.json'
+    path: $(npm_config_cache)
+    cacheHitVar: NPM_CACHE_RESTORED
+  condition: ne(variables['NPM_CACHE_RESTORED'], 'true')
+  
+
 - script: |
-    echo -e "Executing Build : $(System.DefaultWorkingDirectory)\n" && ls 
+    echo -e "Executing Builds : $(System.DefaultWorkingDirectory)\n" && ls 
     npm install
     npm run build
   displayName: 'npm install and build'
@@ -24,10 +35,10 @@ steps:
   
 - task: AzureStaticWebApp@0
   inputs:
-    app_location: '/trainee_frontend'
+    app_location: '/trainee_frontend/build'
     output_location: '/trainee_frontend/build'
-    skip_app_build: false
-    skip_api_build: false
+    skip_app_build: true
+    skip_api_build: true
     app_build_command: 'npm run build'
     build_timeout_in_minutes: 10
     is_static_export: false
