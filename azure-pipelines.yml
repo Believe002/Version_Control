@@ -1,0 +1,35 @@
+# Node.js with React
+# Build a Node.js project that uses React.
+# Add steps that analyze code, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
+
+trigger:
+- main
+
+pool: BlazeAgent
+  
+
+steps:
+- task: NodeTool@0
+  inputs:
+    versionSpec: '16.x'
+  displayName: 'Install Node.js'
+
+- script: |
+    echo -e "Executing Build : $(System.DefaultWorkingDirectory)\n" && ls 
+    npm install
+    npm run build
+  displayName: 'npm install and build'
+  workingDirectory: ./trainee_frontend/
+  
+- task: AzureStaticWebApp@0
+  inputs:
+    app_location: '/trainee_frontend'
+    output_location: '/trainee_frontend/build'
+    skip_app_build: false
+    skip_api_build: false
+    app_build_command: 'npm run build'
+    build_timeout_in_minutes: 10
+    is_static_export: false
+    verbose: true
+    azure_static_web_apps_api_token: $(StaticWebAppApiToken)
