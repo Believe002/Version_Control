@@ -22,7 +22,7 @@ function App() {
             <Container>
               <Navbar.Brand>
                 <Link to={'/create-student'} className="nav-link">
-                  Student Record Tracker
+                  Mern App Todo
                 </Link>
               </Navbar.Brand>
 

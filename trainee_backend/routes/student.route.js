@@ -5,6 +5,11 @@ let mongoose = require('mongoose'),
 // Student Model
 let studentSchema = require('../models/Student')
 
+
+router.route("/test").get((req,res) => {
+  res.send("Hello World !!")
+})
+
 // CREATE Student
 router.route('/create-student').post((req, res, next) => {
   studentSchema.create(req.body, (error, data) => {
